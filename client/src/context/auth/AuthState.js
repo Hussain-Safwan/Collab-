@@ -34,7 +34,7 @@ const AuthState = props => {
       }
     }
     const res = await axios.post(
-      'http://localhost:4000/users/',
+      'https://collab-bin.herokuapp.com/users/',
       formData,
       config
       )
@@ -51,7 +51,7 @@ const AuthState = props => {
     setAuthToken(localStorage.token);
 
     try {
-      const res = await axios.get('http://localhost:4000/auth');
+      const res = await axios.get('https://collab-bin.herokuapp.com/auth');
       dispatch({
         type: USER_LOADED,
         payload: res.data
@@ -70,7 +70,7 @@ const AuthState = props => {
       }
     }
     const res = await axios.post(
-      'http://localhost:4000/auth/',
+      'https://collab-bin.herokuapp.com/auth/',
       formData,
       config
       )

@@ -37,9 +37,10 @@ server.listen(PORT, () => {
 })
 
 // Real time shit!
+let clients = 0
 io.on("connection", (socket) => {
-  console.log("New client connected");
-  let name 
+  let name = ''
+  clients++
   socket.on('create', data => {
     const file = JSON.parse(data)
     name = file.name 
@@ -60,9 +61,12 @@ io.on("connection", (socket) => {
   })
 
   socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    fs.unlink(name, (err, res) => {
-      console.log(err, res)
-    })
+    clients--
+    console.log("Client disconnected, Remaining: ", clients);
+    if ( name && clients == 0 ) {
+      fs.unlink(name, (err, res) => {
+        console.log(err, name)
+      })
+    }
   });
 });

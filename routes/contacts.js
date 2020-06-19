@@ -7,7 +7,11 @@ const auth = require('../middlewares/auth')
 
 router.get('/', auth, async (req, res) => {
   const contacts = await contactModel.find({user_id: req.user.id}).sort({_id: -1})
-  res.send(contacts)
+  const data = {
+    status: true,
+    contacts
+  }
+  res.send(data)
 })
 
 router.put('/update/:id', (req, res) => {

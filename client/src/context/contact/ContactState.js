@@ -11,7 +11,8 @@ import {
   CLEAR_CURRENT,
   UPDATE_CONTACT,
   FILTER_CONTACTS,
-  CLEAR_FILTER
+  CLEAR_FILTER,
+  AUTH_NEEDED
 } from '../types'
 
 const ContactState = props => {
@@ -26,14 +27,21 @@ const ContactState = props => {
   // get contacts
   const getContacts = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/contacts/')
+      const res = await axios.get('https://collab-bin.herokuapp.com/contacts/')
       console.log('state: ', res.data)
-      dispatch({
-        type: GET_CONTACTS,
-        payload: res.data
-      })
+      if (res.data.status) {
+        dispatch({
+          type: GET_CONTACTS,
+          payload: res.data.contacts
+        })
+      } else {
+        dispatch({
+          type: AUTH_NEEDED,
+        })
+      }
+      
     } catch (error) {
-      console.log('error!')
+      console.log(error)
     }
   }
 
@@ -44,7 +52,7 @@ const ContactState = props => {
         'Content-Type': 'application/json'
       }
     }
-    const res = await axios.post('http://localhost:4000/contacts', contact, config)
+    const res = await axios.post('https://collab-bin.herokuapp.com/contacts', contact, config)
     dispatch({ type: ADD_CONTACT, payload: contact })
   }
 

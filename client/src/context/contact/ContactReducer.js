@@ -6,7 +6,8 @@ import {
   CLEAR_CURRENT,
   UPDATE_CONTACT,
   FILTER_CONTACTS,
-  CLEAR_FILTER
+  CLEAR_FILTER,
+  AUTH_NEEDED
 } from '../types'
 
 export default (state, action) => {
@@ -16,6 +17,12 @@ export default (state, action) => {
       ...state,
       contacts: action.payload,
     }
+
+    case AUTH_NEEDED: 
+      return {
+        ...state,
+        contacts: []
+      }
 
     case ADD_CONTACT: 
       return {
