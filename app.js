@@ -5,15 +5,16 @@ const app = express()
 const cors = require('cors')
 const connectDB = require('./config/db')
 app.use(cors());
+const path = require('path')
 
 const socketIO = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
 const io = socketIO(server)
 
-app.get('/', (req, res) => {
-  res.json('Hello')
-})
+// app.get('/', (req, res) => {
+//   res.json('Hello')
+// })
 
 app.use(express.json({ extended: false }))
 app.use('/auth', require('./routes/auth'))
@@ -21,6 +22,14 @@ app.use('/contacts', require('./routes/contacts'))
 app.use('/users', require('./routes/users'))
 
 connectDB()
+
+if (process.env.NODE_ENV ==='production') {
+  // Set static folder
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(__dirname, 'client', 'build', 'imdex.html')
+  })
+}
 
 const PORT = process.env.PORT || 4000
 server.listen(PORT, () => {
