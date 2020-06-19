@@ -2,7 +2,7 @@ import React, { useEffect, useState, createRef, findDOMNode } from 'react'
 import io from 'socket.io-client'
 import axios from 'axios'
 
-const endpoint = 'http://localhost:4000'
+const endpoint = 'https://collab-bin.herokuapp.com'
 const socket = io.connect(endpoint)
 
 const Codeview = props => {
