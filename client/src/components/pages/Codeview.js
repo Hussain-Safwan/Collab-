@@ -19,20 +19,19 @@ const Codeview = props => {
     const data = JSON.stringify(file)
     socket.emit('create', data)
     socket.on('update', data => {
-      setBody()
+      setBody(data)
       const editor = document.getElementById('editor')
       editor.selectionStart = editor.selectionEnd = localStorage.getItem('c')
     })
   }, [socket])
 
   const onChange = e => {
+    setBody(e.target.value)
     localStorage.setItem('c', e.target.selectionStart)
-    setCount(count + 1)
-    blip()
-    if (count >= 5) {
+    if (e.target.value[e.target.value.length - 1] == ' ') {
       socket.emit('update', e.target.value)
-      setCount(0)
     }
+    blip()
   }
 
   const blip = () => {
