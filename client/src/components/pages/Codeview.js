@@ -1,24 +1,27 @@
 import React, { useEffect, useState, useContext } from 'react'
-import CodeviewContext from '../../context/contact/ContactContext'
+import CodeviewContext from '../../context/codeview/CodeviewContext'
 import io from 'socket.io-client'
 import axios from 'axios'
 
-const endpoint = 'https://collab-bin.herokuapp.com'
+const endpoint = 'http://localhost:4000'
 const socket = io.connect(endpoint)
 
 const Codeview = props => {
-  const {_id, body} = props.location.state.contact
+  const codeviewContext = useContext(CodeviewContext)
+  const { init } = codeviewContext
+
+  const {_id, title, body} = props.location.state.contact
   const [code, setCode] = useState(body)
   const [show, setShow] = useState('x-low')
   const [count, setCount] = useState(0)
-  useEffect(async() => {
+
+  useEffect(() => {
     const file = {
       name: _id,
       contents: body
     }
-    // codeviewContext.init(file)
-    const data = JSON.stringify(file)
-    socket.emit('create', data)
+    init(file)
+    
     socket.on('update', data => {
       setCode(data)
       const editor = document.getElementById('editor')
@@ -44,6 +47,10 @@ const Codeview = props => {
   
   return (
     <div className='codeview'>
+      <div className='title'>
+        <i class="fa fa-code"></i>
+        <span>{title}</span>
+      </div>
       <div className='wrapper'>
         <textarea id='editor' value={code} onChange={onChange}/>
         <div className={show}>

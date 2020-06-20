@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import CodeviewContext from './CodeviewContext'
+import CodeviewReducer from './CodeviewReducer'
 import io from 'socket.io-client'
 import axios from 'axios'
 
-const endpoint = 'https://collab-bin.herokuapp.com'
+const endpoint = 'http://localhost:4000'
 const socket = io.connect(endpoint)
 
 const CodeviewState = props => {
-  const state = {
-    filename: null,
-    fileContents: null,
-  }
-  const [state, setState] = useState(state)
-  console.log('codeview state', props)
-
+  
   const init = file => {
-    console.log(file)
+    const data = JSON.stringify(file)
+    socket.emit('create', data)
   }
 
   return (
     <CodeviewContext.Provider
       value={{
-        filename: state.filename,
-        fileContents: state.fileContents,
-        init
+        init,
       }} >
         { props.children }
       </CodeviewContext.Provider>

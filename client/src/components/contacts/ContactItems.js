@@ -29,7 +29,7 @@ const ContactItems = ({ contact }) => {
     
       <div className='each-contact' onClick={Navigate}>
         <div className='upper'>
-          
+          <p><i class="fa fa-file"></i></p>
         </div>
         <div className='title'>
           <h3> { title } </h3>

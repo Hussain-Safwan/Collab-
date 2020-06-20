@@ -16,6 +16,7 @@ import {Navbar} from './components/layout/Navbar'
 import ContactState from './context/contact/ContactState'
 import AuthState from './context/auth/AuthState'
 import AlertState from './context/alert/AlertState'
+import CodeviewState from './context/codeview/CodeviewState'
 
 // Utils
 import setAuthToken from './utils/setAuthToken'
@@ -28,23 +29,25 @@ function App() {
   return (
     <AuthState>
       <ContactState>
-        <AlertState>
-          <Router>
-            <Fragment>
-              <Navbar/>
-              <div className='container'>
-                <Alerts />
-                <Switch>
-                  <Route exact path='/' component={Home}/>
-                  <Route exact path='/about' component={About}/>
-                  <Route exact path='/register' component={Register}/>
-                  <Route exact path='/login' component={Login}/>
-                  <Route exact path='/codeview' component={Codeview} />
-                </Switch>
-              </div>
-            </Fragment>
-          </Router>
-      </AlertState>
+        <CodeviewState>
+          <AlertState>
+            <Router>
+              <Fragment>
+                <Navbar/>
+                <div className='container'>
+                  <Alerts />
+                  <Switch>
+                    <Route exact path='/' component={Home}/>
+                    <Route exact path='/about' component={About}/>
+                    <Route exact path='/register' component={Register}/>
+                    <Route exact path='/login' component={Login}/>
+                    <Route exact path='/codeview' component={Codeview} />
+                  </Switch>
+                </div>
+              </Fragment>
+            </Router>
+        </AlertState>
+      </CodeviewState>
     </ContactState>
     </AuthState>
   );

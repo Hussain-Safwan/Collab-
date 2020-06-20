@@ -56,15 +56,11 @@ i {
 }
 .each-contact {
   margin-top: 10px;
-  background-color: #eee;
-  border: 1px solid #ddd;
+  /* background-color: #eee; */
   border-radius: 5px;
   transition: 0.5s;
   cursor: pointer;
   height: 210px;
-}
-.each-contact:hover {
-  background-color: #ddd;
 }
 .each-contact .upper {
   height: 150px;
@@ -73,12 +69,16 @@ i {
   border-radius:  5px 5px 0 0;
   margin: auto;
 }
-.each-contact .upper img {
-  width: 100%;
-  height: 150px;
+.each-contact .upper p {
+  /* text-align: center; */
+  margin-top: 80px;
+}
+.each-contact .upper p i {
+  font-size: 70px;
+  color: gray;
 }
 .each-contact .title {
-  color: darkblue;
+  color: #333;
   padding: 0 10px 10px;
 }
 .last-row {
@@ -241,10 +241,10 @@ form .button .cancel {
 .codeview .wrapper .low {
   display: flex;
   justify-content: space-between;
-  color: green;
+  color: rgb(122, 240, 171);
 }
 .codeview .wrapper .low span {
-  background-color: green;
+  background-color: rgb(207, 247, 224);
   border-radius: 50%;
   height: 15px;
   font-size: 1px;
@@ -252,4 +252,21 @@ form .button .cancel {
 }
 .codeview .wrapper .x-low {
   display: none;
+}
+.codeview .title {
+  cursor: pointer;
+  padding: 20px;
+}
+.codeview .title i {
+  font-size: 18px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background-color: rgb(247, 247, 247);
+  color: #666;
+}
+.codeview .title span {
+  font-size: 22px;
+  padding: 10px 10px;
+  color: #666;
 }
