@@ -8,6 +8,7 @@ const socket = io.connect(endpoint)
 const Codeview = props => {
   const [body, setBody] = useState(props.location.state.contact.body)
   const [show, setShow] = useState('x-low')
+  const [count, setCount] = useState(0)
 
   useEffect(async() => {
     const file = {
@@ -18,17 +19,20 @@ const Codeview = props => {
     const data = JSON.stringify(file)
     socket.emit('create', data)
     socket.on('update', data => {
-      console.log('updated')
-      setBody(data)
+      setBody()
       const editor = document.getElementById('editor')
       editor.selectionStart = editor.selectionEnd = localStorage.getItem('c')
-      blip()
     })
   }, [socket])
 
   const onChange = e => {
     localStorage.setItem('c', e.target.selectionStart)
-    socket.emit('update', e.target.value)
+    setCount(count + 1)
+    blip()
+    if (count >= 5) {
+      socket.emit('update', e.target.value)
+      setCount(0)
+    }
   }
 
   const blip = () => {
