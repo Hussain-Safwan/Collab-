@@ -1,30 +1,11 @@
 const router = require('express').Router()
-const {userModel} = require('../models/users')
-const {check, validationResult} = require('express-validator/check')
+const User = require('../models/user.js')
+const auth = require('../config/auth.js')
 const jwt = require('jsonwebtoken')
-const auth = require('../middlewares/auth')
 
-router.get('/',auth, async (req, res) => {
-  const user = await userModel.findOne({_id: req.user.id})
-  res.send(user)
-})
-
-router.post('/',
-[
-  check('email', 'Please include a valid email').isEmail(),
-  check('password', 'Passwords msut be of minimum 6 characters').isLength({
-    min: 6
-  })
-],
-async (req, res) => {
-  
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.json({ errors: errors.array()})
-  }
-
+router.post('/login', async (req, res) => {
   const {email, password} = req.body
-  const user = await userModel.findOne({email})
+  const user = await User.findOne({email})
   if (!user) {
     res.json('Email not found')
   } else if (user.password != password) {
@@ -39,7 +20,7 @@ async (req, res) => {
     }
     let token
     jwt.sign(payload, 'secret', {
-      expiresIn: 360000
+      expiresIn: 3600
     }, (err, tk) => {
       if (err) {
         res.json('JWT Error')
@@ -54,7 +35,32 @@ async (req, res) => {
     })
 
   }
+})
 
+router.post('/register', async (req, res) => {
+  console.log(req.body)
+  const user = new User(req.body)
+  console.log(user)
+  await user.save()
+
+  res.send({
+    status: true,
+    user,
+    msg: 'registerred'
+  })
+})
+
+router.get('/getUser', auth, async (req, res) => {
+  const user = await User.findOne({_id: req.user.id})
+  res.send(user)
+})
+
+router.get('/logout', async (req, res) => {
+  req.logout()
+  res.send({
+    status: true,
+    msg: 'logged out'
+  })
 })
 
 module.exports = router

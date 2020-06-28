@@ -1,55 +1,45 @@
-import React, { Fragment } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './App.css';
+import './App.css'
+import 'materialize-css/dist/css/materialize.min.css'
+import M from 'materialize-css/dist/js/materialize.min.js'
+
+import Navbar from './components/layouts/Navbar'
+import TopCard from './components/layouts/TopCard'
+import ChatArea from './components/layouts/ChatArea'
+
+// Modals
+import LoginModal from './components/modals/Login'
+import RegModal from './components/modals/Register'
+import EditModal from './components/modals/EditStreamModal'
+
 // Pages
-import {Home} from './components/pages/Home'
-import {About} from './components/pages/About'
-import Register from './components/auth/Register'
-import Login from './components/auth/Login'
-import Codeview from './components/pages/Codeview'
+import Lander from './components/pages/Lander'
+import Chatbox from './components/pages/Chatbox'
 
-// Layouts
-import Alerts from './components/layout/Alerts'
-import {Navbar} from './components/layout/Navbar'
-
-// States
-import ContactState from './context/contact/ContactState'
+import StreamState from './context/streams/StreamState'
 import AuthState from './context/auth/AuthState'
-import AlertState from './context/alert/AlertState'
-import CodeviewState from './context/codeview/CodeviewState'
 
-// Utils
-import setAuthToken from './utils/setAuthToken'
+import Container from './components/Container'
 
-if (localStorage.token) {
-  setAuthToken(localStorage.token)
-}
-
-function App() {
+const App = () => {
+  useEffect(() => {
+    M.AutoInit()
+  }, [])
   return (
-    <AuthState>
-      <ContactState>
-        <CodeviewState>
-          <AlertState>
-            <Router>
-              <Fragment>
-                <Navbar/>
-                <div className='container'>
-                  <Alerts />
-                  <Switch>
-                    <Route exact path='/' component={Home}/>
-                    <Route exact path='/about' component={About}/>
-                    <Route exact path='/register' component={Register}/>
-                    <Route exact path='/login' component={Login}/>
-                    <Route exact path='/codeview' component={Codeview} />
-                  </Switch>
-                </div>
-              </Fragment>
-            </Router>
-        </AlertState>
-      </CodeviewState>
-    </ContactState>
-    </AuthState>
+    <div className="App">
+      <AuthState>
+        <StreamState>
+          <Router>
+            <Navbar />
+            <Switch>
+              <Route exact path='/' component={Container} />
+              <Route exact path='/chat' component={Chatbox} />
+            </Switch>
+          </Router>
+        </StreamState>
+      </AuthState>
+    </div>
   );
 }
 

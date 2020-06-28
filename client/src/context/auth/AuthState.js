@@ -1,120 +1,85 @@
 import React, { useReducer } from 'react'
 import AuthContext from './AuthContext'
 import AuthReducer from './AuthReducer'
+
 import axios from 'axios'
+
 import setAuthToken from '../../utils/setAuthToken'
 
 import {
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  USER_LOADED,
-  AUTH_ERROR,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  LOGOUT,
-  CLEAR_ERRORS
+  LOGIN,
+  REGISTER
 } from '../types'
 
 const AuthState = props => {
   const initialState = {
-    token: localStorage.getItem('token'),
-    isAuthenticated: null,
-    loading: true,
-    error: null,
-    user: null
+    user: null,
+    isAuth: false,
+    loading: null
   }
 
   const [state, dispatch] = useReducer(AuthReducer, initialState)
 
-  // REGISTER USER
-  const register = async formData => {
+  const login = async formData => {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }
     }
-    const res = await axios.post(
-      'https://collab-bin.herokuapp.com/users/',
-      formData,
-      config
-      )
+    const res = await axios.post('http://localhost:5000/auth/login', formData, config)
     console.log(res.data)
-    loadUser()
+    getUser()
     dispatch({
-      type: REGISTER_SUCCESS,
+      type: LOGIN,
       payload: res.data
     })
   }
 
-  // LOAD USER
-  const loadUser = async () => {
-    setAuthToken(localStorage.token);
-
-    try {
-      const res = await axios.get('https://collab-bin.herokuapp.com/auth');
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data
-      });
-    } catch (err) {
-      dispatch({ type: AUTH_ERROR });
-    }
-  };
-  
-
-  // LOGIN USER
-  const loginUser = async formData => {
+  const register = async formData => {
+    console.log('state', formData)
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       }
     }
-    const res = await axios.post(
-      'https://collab-bin.herokuapp.com/auth/',
-      formData,
-      config
-      )
-    console.log(`[backend] ${res.data}`)
-    loadUser()
+    const res = await axios.post('http://localhost:5000/auth/register', formData, config)
+    console.log(res.data)
     dispatch({
-      type: LOGIN_SUCCESS,
-      payload: res.data
+      type: REGISTER,
+      payload: formData
     })
   }
 
-
-  // LOGOUT USER
-  const logoutUser = () => {
-    dispatch({
-      type: LOGOUT
-    })
+  const getUser = async () => {
+    setAuthToken(localStorage.token)
+    console.log('getUser')
+    const res = await axios.get('http://localhost:5000/auth/getUser')
+    console.log('[get-user]', res.data)
+    if (res.data) {
+      dispatch({
+        type: 'SET_USER',
+        payload: res.data
+      })
+    } else {
+      dispatch({
+        type: 'ERROR_USER'
+      })
+    }
   }
 
-  // CLEAR USER
-  const clearUser = () => {
-    console.log('clear user')
-  }
-  
   return (
     <AuthContext.Provider
-      value={
-        { 
-          token: state.token,
-          isAuthenticated: state.isAuthenticated,
-          loading: state.loading,
-          error: state.error,
-          user: state.user,
-          register,
-          loadUser,
-          loginUser,
-          logoutUser,
-          clearUser
-        }
-    } >
-        { props.children }
-      </AuthContext.Provider>
+      value={{
+        isAuth: state.isAuth,
+        user: state.user,
+        login,
+        register,
+        getUser
+      }}
+    >
+      { props.children }
+    </AuthContext.Provider>
   )
-
 }
 
 export default AuthState

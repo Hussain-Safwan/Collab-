@@ -1,5 +1,3 @@
-import React, {createContext} from 'react'
-
-const authContext = createContext()
-
-export default authContext
+import React from 'react'
+const AuthContext = React.createContext()
+export default AuthContext

@@ -1,22 +1,10 @@
-// Post cases
-export const GET_CONTACTS = 'GET_CONTACTS'
-export const ADD_CONTACT = 'ADD_CONTACT'
-export const DELETE_CONTACT = 'DELETE_CONTACT'
-export const SET_CURRENT = 'SET_CURRENT'
-export const CLEAR_CURRENT = 'CLEAR_CURRENT'
-export const UPDATE_CONTACT = 'UPDATE_CONTACT'
-export const FILTER_CONTACTS = 'FILTER_CONTACTS'
-export const CLEAR_FILTER = 'CLEAR_FILTER'
-export const SET_ALERT = 'SET_ALERT'
-export const REMOVE_ALERT = 'REMOVE_ALERT'
-export const AUTH_NEEDED = 'AUTH_NEEDED'
+export const CREATE_STREAM = 'CREAT_STREAM'
+export const GET_STREAM = 'GET_STREAM'
+export const JOIN_STREAM = "JOIN_STREAM" 
+export const SEND_MESSAGE = 'SEND_MESSAGE'
+export const CHOOSE_STREAM = 'CHOOSE_STREAM'
+export const DELETE_STREAM = 'DELETE_STREAM'
+export const UPDATE_STREAM = 'UPDATE_STREAM'
 
-// Auth cases
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const REGISTER_FAIL = 'REGISTER_FAIL';
-export const USER_LOADED = 'USER_LOADED';
-export const AUTH_ERROR = 'AUTH_ERROR';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAIL = 'LOGIN_FAIL';
-export const LOGOUT = 'LOGOUT';
-export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+export const LOGIN = 'LOGIN'
+export const REGISTER = 'REGISTER'
